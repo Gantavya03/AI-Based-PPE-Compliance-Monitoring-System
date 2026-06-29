@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>PPE Monitoring System</title>
+
+    <meta http-equiv="refresh" content="5">
+
+    <!-- BOOTSTRAP -->
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+    <!-- CUSTOM CSS -->
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- CHART JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="bg-dark text-light">
+
+<div class="container-fluid">
+
+<div class="row">
+
+    <!-- ===================================== -->
+    <!-- SIDEBAR -->
+    <!-- ===================================== -->
+
+    <div class="col-md-2 sidebar bg-black text-light vh-100 p-4">
+
+        <h2 class="text-danger">
+            PPE AI
+        </h2>
+
+        <hr>
+
+        <p>
+            Industrial Monitoring
+        </p>
+
+        <div class="mt-4">
+
+            <p>● Live Detection</p>
+
+            <p>● AI Tracking</p>
+
+            <p>● Safety Analytics</p>
+
+            <p>● Violation Evidence</p>
+
+        </div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ===================================== -->
+
+    <div class="col-md-10 p-4">
+
+        <!-- ===================================== -->
+        <!-- HEADER -->
+        <!-- ===================================== -->
+
+        <div class="mb-4">
+
+            <h1>
+                Industrial PPE Dashboard
+            </h1>
+
+            <p class="text-secondary">
+                Real-Time AI Surveillance System
+            </p>
+
+        </div>
+
+        <!-- ===================================== -->
+        <!-- KPI CARDS -->
+        <!-- ===================================== -->
+
+        <div class="row g-4">
+
+            <!-- TOTAL -->
+
+            <div class="col-md-3">
+
+                <div class="card bg-danger text-white shadow-lg border-0">
+
+                    <div class="card-body">
+
+                        <div class="title">
+                            Total Violations
+                        </div>
+
+                        <div class="metric display-5">
+                            {{ total }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- HELMET -->
+
+            <div class="col-md-3">
+
+                <div class="card bg-warning text-dark shadow-lg border-0">
+
+                    <div class="card-body">
+
+                        <div class="title">
+                            Helmet Missing
+                        </div>
+
+                        <div class="metric display-5">
+                            {{ helmet }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- VEST -->
+
+            <div class="col-md-3">
+
+                <div class="card bg-primary text-white shadow-lg border-0">
+
+                    <div class="card-body">
+
+                        <div class="title">
+                            Vest Missing
+                        </div>
+
+                        <div class="metric display-5">
+                            {{ vest }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- WORKERS -->
+
+            <div class="col-md-3">
+
+                <div class="card bg-success text-white shadow-lg border-0">
+
+                    <div class="card-body">
+
+                        <div class="title">
+                            Workers Detected
+                        </div>
+
+                        <div class="metric display-5">
+                            {{ workers }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        
+      
+
+
+        <!-- ===================================== -->
+        <!--CHART -->
+        <!-- ===================================== -->
+
+        
+
+        <div class="row">
+            
+            <div class="col-md-6">
+                
+                <div class="card bg-secondary border-0 shadow-lg p-4">
+                    <h4 class="mb-4">
+                        Violations Analytics
+                    </h4>
+                    
+                    <div style="height:400px; width:400px; margin:auto;">
+                        
+                        <canvas id="myChart"></canvas>
+                    
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <!-- ===================================== -->
+        <!-- SCREENSHOT GALLERY -->
+        <!-- ===================================== -->
+
+        <div class="card bg-secondary border-0 shadow-lg p-3">
+
+            <h4 class="mb-4">
+                Violation Evidence
+            </h4>
+
+            <div class="row">
+
+                {% for img in images %}
+
+                <div class="col-md-3 mb-4">
+
+                    <img
+                    src="{{ url_for(
+                    'static',
+                    filename='screenshots/' + img,
+                    t=range(1,100000)|random
+                    ) }}"
+                    
+                    class="gallery-img img-fluid rounded shadow">
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <br>
+
+        <!-- ===================================== -->
+        <!-- RECENT VIOLATIONS -->
+        <!-- ===================================== -->
+
+        <div class="card bg-secondary border-0 shadow-lg p-3">
+
+            <h4 class="mb-4">
+                Recent Violations
+            </h4>
+
+            <div class="mb-3">
+                
+                <a href="/ack"
+                    class="btn btn-warning">
+
+                    ACKNOWLEDGE ALL ALARMS
+
+                </a>
+
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-dark table-hover">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Violation</th>
+
+                        <th>Time</th>
+
+                        <th>Alarm</th>
+                        
+                        <th>ACK</th>
+                        
+                        
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for row in rows %}
+
+                    <tr>
+                        <!-- ID -->
+                        <td>{{ row[0] }}</td>
+
+                        <!-- VIOLATION -->
+                        <td>{{ row[1] }}</td>
+
+                        <!-- TIME -->
+                        <td>{{ row[2] }}</td>
+
+                        <!-- ALARM STATUS -->
+                        <td>
+                            
+                            {% if row[6] == 1 %}
+                                <span class="badge bg-danger">
+                                    ACTIVE
+                                </span>
+
+                            {% else %}
+                                <span class="badge bg-success">
+                                    OFF
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- ACK STATUS -->
+                        <td>
+                            {% if row[4] == 1 %}
+                                <span class="badge bg-success">
+                                    ACKNOWLEDGED
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-warning text-dark">
+                                    PENDING
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        
+
+                        
+
+                    </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- ===================================== -->
+<!-- CHART -->
+<!-- ===================================== -->
+
+<script>
+
+const ctx = document.getElementById('myChart');
+
+new Chart(ctx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: [
+
+            'Helmet',
+
+            'Vest'
+        ],
+
+        datasets: [{
+
+            data: [
+
+                Number("{{ helmet }}"),
+
+                Number("{{ vest }}")
+            ],
+
+            borderWidth: 2
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                labels: {
+
+                    color: 'white'
+                }
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+
+</html>

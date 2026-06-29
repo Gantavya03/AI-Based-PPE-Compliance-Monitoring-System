@@ -1,0 +1,42 @@
+body{
+    background-color:#0f172a;
+    color:white;
+    font-family:Arial, sans-serif;
+}
+
+.sidebar{
+    height:100vh;
+    background:#111827;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    border:none;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+.metric{
+    font-size:32px;
+    font-weight:bold;
+}
+
+.title{
+    color:#94a3b8;
+}
+
+.stream-box{
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.gallery-img{
+    width:100%;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+table{
+    color:white !important;
+}
